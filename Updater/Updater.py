@@ -18,11 +18,13 @@ put in the final execuatable. This attempts to load either to be safe.
 The default version of publisher also changes based upon the version of 
 wxPython installed.
 """
-try: from wx.lib.pubsub import Publisher as pub
-except: 
-    print "Changing pub mode"
+try: 
     from wx.lib.pubsub import setuparg1
     from wx.lib.pubsub import pub
+except: 
+    print "Changing pub mode"
+    from wx.lib.pubsub import Publisher as pub
+    
     
 class DownloadThread(Thread):
     """Downloading thread"""
