@@ -1,7 +1,9 @@
 import wx
 from lib.UI.MsgPopUp import *
-try: from wx.lib.pubsub import Publisher as pub
+try: 
+    from wx.lib.pubsub import Publisher as pub
 except: 
+    print "Changing publisher version"
     from wx.lib.pubsub import setuparg1
     from wx.lib.pubsub import pub
 
@@ -19,6 +21,7 @@ class BoxMessage(wx.Panel):
         if len(MSG) > 35:
             MSG = MSG[:35]+"..."
         self.ID = convo[0]['id']
+        
         self.CONVO = convo
         wx.CallAfter(pub.sendMessage,self.ID,data=self.CONVO)
         
