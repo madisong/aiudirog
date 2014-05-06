@@ -1,0 +1,13 @@
+{
+  "name": "DesktopGoogleVoice"
+, "files": [ { "directory": ".",
+      "filters": [
+	"*.py",
+	"*.ini",
+	"*.spec",
+	"*.sh",
+	"*.bat"
+      ], 
+    "recursive": 1 } 
+  ]
+}
