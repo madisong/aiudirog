@@ -58,7 +58,11 @@ class MsgsPanel(scrolled.ScrolledPanel):
         del Password
         for widget in self.LoginScreenWidgets:
             widget.Destroy()
-        self.LoadFolder("Inbox")
+        self.LoadInbox()
         
-    def LoadFolder(self, folder):
-        self.CurrentFolder = googlevoice.util.Folder(Globals.voice, folder)
+    def LoadInbox(self):
+        for message in Globals.Voice.inbox().messages:
+            name = message["phoneNumber"]
+            msg = message['messageText']
+            self.AddMessage(name,msg)
+            
