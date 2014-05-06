@@ -28,6 +28,6 @@ class CheckNewMsgs(Thread):
             CurrentUnreadCount = unread["unreadCounts"][Globals.CurrentFolder]
             if CurrentUnreadCount!=0 and LastUnreadCount!=CurrentUnreadCount:
                     print "New Messages!"
-                    wx.CallAfter(pub.sendMessage,"ReLoadFolder",data=None)
+                    wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",data=None)
                     LastUnreadCount = CurrentUnreadCount
             sleep(5)

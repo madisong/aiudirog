@@ -1,5 +1,9 @@
 import wx
 from lib.UI.MsgPopUp import *
+try: from wx.lib.pubsub import Publisher as pub
+except: 
+    from wx.lib.pubsub import setuparg1
+    from wx.lib.pubsub import pub
 
 class BoxMessage(wx.Panel):
     def __init__(self, parent, convo, *args, **kws):
@@ -7,9 +11,14 @@ class BoxMessage(wx.Panel):
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         vbox = wx.BoxSizer(wx.VERTICAL)
         
-        NAME = convo[0]['from']
+        for c in convo:
+            NAME = c['from']
+            if NAME != "Me:": break
+        
         MSG = convo[-1]['text']
+        self.ID = convo[0]['id']
         self.CONVO = convo
+        wx.CallAfter(pub.sendMessage,self.ID,data=self.CONVO)
         
         self.name = wx.StaticText(self, -1, NAME)
         self.msg = wx.StaticText(self, -1, MSG)

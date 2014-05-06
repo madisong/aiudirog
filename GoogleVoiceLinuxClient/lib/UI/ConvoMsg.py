@@ -1,5 +1,6 @@
 import wx
 
+
 class ConvoMsg(wx.Panel):
     def __init__(self, parent, msg, *args, **kws):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY,style=wx.BORDER_SUNKEN)

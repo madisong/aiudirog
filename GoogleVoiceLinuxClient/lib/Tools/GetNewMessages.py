@@ -38,7 +38,7 @@ class GetNewMsgs(Thread):
             tmpfolder()
             tmpconvo = self.extractsms(tmpfolder.html)
             Convos += tmpconvo
-            
+        print Convos
         wx.CallAfter(pub.sendMessage,"ReLoadFolder",data=Convos)
     
     def LoadMoreMessages(self):
@@ -48,9 +48,9 @@ class GetNewMsgs(Thread):
         tmpfolder = fetchfolderpage(Globals.Voice,Globals.CurrentFolder,page)
         tmpfolder()
         tmpconvo = self.extractsms(tmpfolder.html)
-        Convos += tmpconvo
+        self.arg += tmpconvo
         
-        wx.CallAfter(pub.sendMessage,"LoadMoreMessages",data=Convos)
+        wx.CallAfter(pub.sendMessage,"LoadMoreMessages",data=self.arg)
     
     def extractsms(self,htmlsms) :
         """

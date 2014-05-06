@@ -24,9 +24,10 @@ class MsgsPanel(scrolled.ScrolledPanel):
         
         self.CurrentBox = []
         
-        pub.subscribe(self.ThreadForReLoadFolder, "ReLoadFolder")
+        pub.subscribe(self.ReLoadFolder, "ReLoadFolder")
+        pub.subscribe(self.ThreadForReLoadFolder, "ThreadForReLoadFolder")
         pub.subscribe(self.LoadFolder, "LoadFolder")
-        pub.subscribe(self.ThreadForLoadMoreMessages, "LoadMoreMessages")
+        pub.subscribe(self.LoadMoreMessages, "LoadMoreMessages")
         
         self.LoginScreen = LoginPanel(self)
         self.MSGBox.Add(self.LoginScreen,0,wx.EXPAND|wx.ALL,5)
@@ -83,6 +84,7 @@ class MsgsPanel(scrolled.ScrolledPanel):
         wx.CallAfter(GetNewMsgs,"LoadFolder")
     
     def ReLoadFolder(self, data=None):
+        print True
         self.Convos = data.data
         self.MSGBox.Clear(True)
             
