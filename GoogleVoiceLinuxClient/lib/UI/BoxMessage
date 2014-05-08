@@ -8,8 +8,17 @@ class BoxMessage(wx.Panel):
 
         self.name = wx.StaticText(self, -1, NAME)
         self.msg = wx.StaticText(self, -1, MSG)
-        NameFont = wx.Font(18, wx.DECORATIVE, wx.BOLD, wx.NORMAL)
-        self.name.SetFont(font)
+        NameFont = wx.Font(14, wx.DECORATIVE, wx.BOLD, wx.NORMAL)
+        self.name.SetFont(NameFont)
 
-        vbox.Add()
+        vbox.Add(self.name, 0, wx.EXPAND|wx.ALL, 5)
+        vbox.Add(self.vbox, 0, wx.EXPAND|wx.ALL, 5)
+        hbox.Add(vbox, 0, wx.EXPAND|wx.ALL, 5)
         self.SetSizer(hbox)
+        self.Fit()
+
+    def ChangeName(NAME):
+        self.name.SetLabel(NAME)
+    
+    def ChangeMsg(MSG):
+        self.name.SetLabel(MSG)
