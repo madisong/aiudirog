@@ -17,8 +17,8 @@ class BoxMessage(wx.Panel):
         self.SetSizer(hbox)
         self.Fit()
 
-    def ChangeName(NAME):
+    def ChangeName(self,NAME):
         self.name.SetLabel(NAME)
     
-    def ChangeMsg(MSG):
+    def ChangeMsg(self,MSG):
         self.name.SetLabel(MSG)
