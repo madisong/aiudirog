@@ -1,0 +1,5 @@
+import wx
+
+class BoxMessage(wx.Panel):
+    def __init__(self, parent, NAME, MESSAGE, *args, **kws):
+        wx.Panel.__init__(parent
