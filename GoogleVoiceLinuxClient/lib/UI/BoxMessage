@@ -1,5 +1,15 @@
 import wx
 
 class BoxMessage(wx.Panel):
-    def __init__(self, parent, NAME, MESSAGE, *args, **kws):
-        wx.Panel.__init__(parent
+    def __init__(self, parent, NAME, MSG, *args, **kws):
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY)
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        vbox = wx.BoxSizer(wx.VERTICAL)
+
+        self.name = wx.StaticText(self, -1, NAME)
+        self.msg = wx.StaticText(self, -1, MSG)
+        NameFont = wx.Font(18, wx.DECORATIVE, wx.BOLD, wx.NORMAL)
+        self.name.SetFont(font)
+
+        vbox.Add()
+        self.SetSizer(hbox)
