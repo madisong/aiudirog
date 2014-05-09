@@ -14,6 +14,8 @@ class BoxMessage(wx.Panel):
         vbox.Add(self.name, 0, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 5)
         vbox.Add(self.msg, 0, wx.EXPAND|wx.BOTTOM|wx.LEFT|wx.RIGHT, 5)
         hbox.Add(vbox, 0, wx.EXPAND|wx.ALL, 0)
+
+        self.Bind(wx.EVT_LEFT_UP, self.PopUp)
         self.SetSizer(hbox)
         self.Fit()
 
@@ -22,3 +24,7 @@ class BoxMessage(wx.Panel):
     
     def ChangeMsg(self,MSG):
         self.name.SetLabel(MSG)
+
+    def PopUp(self, instance):
+        #Need to make and load a dialog for the chat.
+        pass
