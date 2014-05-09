@@ -6,12 +6,12 @@ class MsgsPanel(scrolled.ScrolledPanel):
     def __init__(self, parent):
         scrolled.ScrolledPanel.__init__(self, parent, -1)
         self.MSGBox = wx.BoxSizer(wx.VERTICAL)
-        CurrentBox = []
+        self.CurrentBox = []
         self.SetSizer(self.MSGBox)
         self.SetAutoLayout(1)
         self.SetupScrolling()
 
     def AddMessage(self, NAME, MSG):
         MSG = BoxMessage(self,NAME,MSG)
-        CurrentBox.append(MSG)
+        self.CurrentBox.append(MSG)
         self.MSGBox.Add(MSG,0,wx.EXPAND|wx.ALL,5)
