@@ -2,7 +2,7 @@ import  wx
 import  wx.lib.scrolledpanel as scrolled
 from lib.UI.BoxMessage import *
 from lib.Tools.Globals import *
-import googlevoice
+import googlevoice as gv
 
 class MsgsPanel(scrolled.ScrolledPanel):
     def __init__(self, parent):
@@ -59,10 +59,10 @@ class MsgsPanel(scrolled.ScrolledPanel):
         for widget in self.LoginScreenWidgets:
             self.MSGBox.Remove(widget)
             widget.Destroy()
-        self.LoadInbox()
+        self.LoadFolder("inbox")
         
-    def LoadInbox(self):
-        for message in Globals.Voice.inbox().messages:
+    def LoadFolder(self, folder):
+        for message in getattr(Globals.Voice, folder)().messages:
             name = message["phoneNumber"]
             msg = message['messageText']
             self.AddMessage(name,msg)
