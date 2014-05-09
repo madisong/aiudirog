@@ -9,6 +9,7 @@ class MsgsPanel(scrolled.ScrolledPanel):
         scrolled.ScrolledPanel.__init__(self,parent,-1,style=wx.TAB_TRAVERSAL)
         self.MSGBox = wx.BoxSizer(wx.VERTICAL)
         self.CurrentBox = []
+        self.CurrentFolder = None
         self.LoginScreen()
         self.SetSizer(self.MSGBox)
         self.SetAutoLayout(1)
@@ -47,9 +48,17 @@ class MsgsPanel(scrolled.ScrolledPanel):
             GA += "@gmail.com"
         try: Globals.Voice.login(GA,Password)
         except googlevoice.util.LoginError:
-            #Window telling the user to try again.
+            Error = wx.MessageDialog(self, 
+                                     "Login to Google Voice account failed. "\
+                                     "Please check internet connection, username, and password.",
+                                     caption="Login Error", style=wx.ICON_ERROR)
+            Error.ShowModal()
             return
         del GA
         del Password
         for widget in self.LoginScreenWidgets:
             widget.Destroy()
+        self.LoadFolder("Inbox")
+        
+    def LoadFolder(self, folder):
+        self.CurrentFolder = googlevoice.util.Folder(Globals.voice, folder)
