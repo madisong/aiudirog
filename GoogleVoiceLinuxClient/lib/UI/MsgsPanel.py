@@ -57,6 +57,7 @@ class MsgsPanel(scrolled.ScrolledPanel):
         del GA
         del Password
         for widget in self.LoginScreenWidgets:
+            self.MSGBox.Remove(widget)
             widget.Destroy()
         self.LoadInbox()
         
