@@ -9,12 +9,10 @@ class MainFrame(wx.Frame):
         dw, dh = wx.GetDisplaySize()
         x = dw - 300
         wx.Frame.__init__(self, parent, title=title, 
-                          size=(300,GCDR()[3]),
+                          size=(300,GCDR()[3]-2*GCDR()[1]),
                           pos=(x,GCDR()[1]))
         Panel = MsgsPanel(self)
-        for x in range(20):
-            Panel.AddMessage("Roger", "Testing")
-            
+        
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Show()
         self.Layout()
