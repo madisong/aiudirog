@@ -2,16 +2,31 @@ import  wx
 import  wx.lib.scrolledpanel as scrolled
 from lib.UI.BoxMessage import *
 from lib.Tools.Globals import *
+from lib.Tools.CheckNewMsgs import *
+from lib.Tools.GetNewMessages import *
 import googlevoice as gv
 import BeautifulSoup
 from lib.Tools.pygooglevoicepatches import *
+try: from wx.lib.pubsub import Publisher as pub
+except: 
+    from wx.lib.pubsub import setuparg1
+    from wx.lib.pubsub import pub
 
 class MsgsPanel(scrolled.ScrolledPanel):
     def __init__(self, parent):
         scrolled.ScrolledPanel.__init__(self,parent,-1,style=wx.TAB_TRAVERSAL)
+        MainSizer = wx.BoxSizer(wx.VERTICAL)
         self.MSGBox = wx.BoxSizer(wx.VERTICAL)
+        self.LoadMoreBox = wx.BoxSizer(wx.VERTICAL)
+        
+        MainSizer.Add(self.MSGBox,0,wx.EXPAND|wx.ALL,0)
+        MainSizer.Add(self.LoadMoreBox,0,wx.EXPAND|wx.ALL,0)
+        
         self.CurrentBox = []
-        self.CurrentFolder = None
+        
+        pub.subscribe(self.ThreadForReLoadFolder, "ReLoadFolder")
+        pub.subscribe(self.LoadFolder, "LoadFolder")
+        pub.subscribe(self.ThreadForLoadMoreMessages, "LoadMoreMessages")
         
         self.LoginScreen = LoginPanel(self)
         self.MSGBox.Add(self.LoginScreen,0,wx.EXPAND|wx.ALL,5)
@@ -20,15 +35,13 @@ class MsgsPanel(scrolled.ScrolledPanel):
         
         self.SetBackgroundColour("#FFD700")
         
-        self.SetSizer(self.MSGBox)
+        self.SetSizer(MainSizer)
         self.SetAutoLayout(1)
         self.SetupScrolling()
     
     def Login(self, instance):
         Password = self.LoginScreen.Password.GetValue()
         GA = self.LoginScreen.GoogleAccount.GetValue()
-        if "@" not in GA:
-            GA += "@gmail.com"
         try: Globals.Voice.login(GA,Password)
         except gv.util.LoginError:
             Error = wx.MessageDialog(self, 
@@ -40,60 +53,67 @@ class MsgsPanel(scrolled.ScrolledPanel):
         del GA
         del Password
         self.LoginScreen.Destroy()
+        Globals.CurrentFolder = "inbox"
+        GetNewMsgs("LoadFolder","inbox")
+        LoadMore = wx.StaticText(self, -1, "Load More...")
+        LoadMore.Bind(wx.EVT_LEFT_UP, self.ThreadForLoadMoreMessages)
+        self.LoadMoreBox.Add(LoadMore,0,wx.EXPAND|wx.ALL,10)
         self.Layout()
-        self.LoadFolder("inbox")
-
+    
+    def CheckNew(self, event=None):
+        CheckNewMsgs()
+    
     def AddMessage(self, convo):
         MSG = BoxMessage(self,convo)
         self.CurrentBox.append(MSG)
         self.MSGBox.Add(MSG,0,wx.EXPAND|wx.ALL,5)
         
-    def LoadFolder(self, folder):
-        getattr(Globals.Voice, folder)()
-        Convos = []
-        totalsize = getattr(Globals.Voice, folder).data['totalSize']
-        while totalsize%10 != 0:
-            totalsize += 1
+    def LoadFolder(self, data=None):
+        self.Convos = data.data
+        self.MSGBox.Clear(True)
         
-        for x in range(totalsize/10):
-            tmpfolder = fetchfolderpage(Globals.Voice,folder, x)
-            tmpfolder()
-            tmpconvo = self.extractsms(tmpfolder.html)
-            Convos += tmpconvo
-            
-        for convo in Convos:
+        for convo in self.Convos:
             self.AddMessage(convo)
         self.Layout()
+        self.SetAutoLayout(1)
+        self.SetupScrolling()
+        wx.CallAfter(self.CheckNew)
     
-    def extractsms(self,htmlsms) :
-        """
-        extractsms  --  extract SMS messages from BeautifulSoup tree of Google Voice SMS HTML.
-
-        Output is a list of dictionaries, one per message.
-        """
-        #   Extract all conversations by searching for a DIV with an ID at top level.
-        tree = BeautifulSoup.BeautifulSoup(htmlsms)         # parse HTML into tree
-        conversations = tree.findAll("div",attrs={"id" : True},recursive=False)
-        Convos = []
-        for conversation in conversations:
-            #   For each conversation, extract each row, which is one SMS message.
-            rows = conversation.findAll(attrs={"class" : "gc-message-sms-row"})
-            tmp = []
-            for row in rows :                               # for all rows
-                #   For each row, which is one message, extract all the fields.
-                msgitem = {"id" : conversation["id"]}       # tag this message with conversation ID
-                spans = row.findAll("span",attrs={"class" : True}, recursive=False)
-                for span in spans :                         # for all spans in row
-                    cl = span["class"].replace('gc-message-sms-', '')
-                    msgitem[cl] = (" ".join(span.findAll(text=True))).strip()   # put text in dict
-                tmp.append(msgitem)                    # add msg dictionary to list
-            Convos.append(tmp)
-        return Convos
+    def ThreadForLoadFolder(self, event=None):
+        wx.CallAfter(GetNewMsgs,"LoadFolder")
+    
+    def ReLoadFolder(self, data=None):
+        self.Convos = data.data
+        self.MSGBox.Clear(True)
+            
+        for convo in self.Convos:
+            self.AddMessage(convo)
+            
+        self.Layout()
+        self.SetAutoLayout(1)
+        self.SetupScrolling()
+    
+    def ThreadForReLoadFolder(self, event=None):
+        wx.CallAfter(GetNewMsgs,"ReLoadFolder",self.Convos)
+    
+    def LoadMoreMessages(self, data=None):
+        self.MSGBox.Clear(True)
+        self.Convos = data.data
         
+        for convo in self.Convos:
+            self.AddMessage(convo)
+            
+        self.Layout()
+        self.SetAutoLayout(1)
+        self.SetupScrolling()
+    
+    def ThreadForLoadMoreMessages(self, event=None):
+        wx.CallAfter(GetNewMsgs,"LoadMoreMessages",self.Convos)
+    
 class LoginPanel(wx.Panel):
     def __init__(self,parent):
         wx.Panel.__init__(self, parent=parent, id=wx.ID_ANY,
-                          style=wx.BORDER_RAISED)
+                          style=wx.BORDER_RAISED|wx.TAB_TRAVERSAL)
         self.VBOX = wx.BoxSizer(wx.VERTICAL)
 
         GoogleAccountTxt = wx.StaticText(self, -1, "Google Account:")
