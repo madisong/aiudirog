@@ -38,7 +38,7 @@ class GetNewMsgs(Thread):
             tmpfolder()
             tmpconvo = self.extractsms(tmpfolder.html)
             Convos += tmpconvo
-        print Convos
+            
         wx.CallAfter(pub.sendMessage,"ReLoadFolder",data=Convos)
     
     def LoadMoreMessages(self):

@@ -11,6 +11,7 @@ try: from wx.lib.pubsub import Publisher as pub
 except: 
     from wx.lib.pubsub import setuparg1
     from wx.lib.pubsub import pub
+import keyring
 
 class MsgsPanel(scrolled.ScrolledPanel):
     def __init__(self, parent):
@@ -43,6 +44,8 @@ class MsgsPanel(scrolled.ScrolledPanel):
     def Login(self, instance):
         Password = self.LoginScreen.Password.GetValue()
         GA = self.LoginScreen.GoogleAccount.GetValue()
+        if self.LoginScreen.cb.GetValue():
+            keyring.set_password('GoogleVoice','LastUser',GA+":"+Password)
         try: Globals.Voice.login(GA,Password)
         except gv.util.LoginError:
             Error = wx.MessageDialog(self, 
@@ -84,7 +87,6 @@ class MsgsPanel(scrolled.ScrolledPanel):
         wx.CallAfter(GetNewMsgs,"LoadFolder")
     
     def ReLoadFolder(self, data=None):
-        print True
         self.Convos = data.data
         self.MSGBox.Clear(True)
             
@@ -130,9 +132,19 @@ class LoginPanel(wx.Panel):
         self.VBOX.Add(PasswordTxt,0,wx.EXPAND|wx.ALL,5)
         self.VBOX.Add(self.Password,0,wx.EXPAND|wx.ALL,5)
         
+        self.cb = wx.CheckBox(self, -1, 'Save Login Details?', (10, 10))
+        self.cb.SetValue(True)
+        self.VBOX.Add(self.cb, 0, wx.EXPAND|wx.ALL, 5)
+        
         self.submit = wx.Button(self, 1, "Submit")
         
         self.VBOX.Add(self.submit,0,wx.ALL,5)
+        
+        userpass = keyring.get_password('GoogleVoice','LastUser')
+        if userpass != None:
+            userpass = userpass.split(":")
+            self.GoogleAccount.SetValue(userpass[0])
+            self.Password.SetValue(userpass[1])
         
         self.SetSizer(self.VBOX)
         

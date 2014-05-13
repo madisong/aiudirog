@@ -15,7 +15,9 @@ class BoxMessage(wx.Panel):
             NAME = c['from']
             if NAME != "Me:": break
         
-        MSG = convo[-1]['text']
+        MSG = convo[-1]['text'].replace("\n","")
+        if len(MSG) > 35:
+            MSG = MSG[:35]+"..."
         self.ID = convo[0]['id']
         self.CONVO = convo
         wx.CallAfter(pub.sendMessage,self.ID,data=self.CONVO)
