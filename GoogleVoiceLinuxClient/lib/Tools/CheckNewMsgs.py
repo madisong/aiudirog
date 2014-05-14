@@ -24,17 +24,21 @@ class CheckNewMsgs(Thread):
         CurrentUnreadCount = 0
         LastUnreadCount = 0
         while True:
-            #Download unread counts from Google Voice API
-            unread = loads(urlopen(Request("https://www.google.com/voice/request/unread")).read())
-            CurrentUnreadCount = unread["unreadCounts"][Globals.CurrentFolder]
-            #If messages have been checked and read, load those changes
-            if CurrentUnreadCount < LastUnreadCount:
-                LastUnreadCount = CurrentUnreadCount
-            if CurrentUnreadCount!=0 and LastUnreadCount!=CurrentUnreadCount:
-                    print "New Messages!"
-                    #Display notification
-                    wx.CallAfter(Notify)
-                    #Reload all conversations
-                    wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",data=None)
+            try:
+                #Download unread counts from Google Voice API
+                unread = loads(urlopen(Request("https://www.google.com/voice/request/unread")).read())
+                CurrentUnreadCount = unread["unreadCounts"][Globals.CurrentFolder]
+                #If messages have been checked and read, load those changes
+                if CurrentUnreadCount < LastUnreadCount:
                     LastUnreadCount = CurrentUnreadCount
+                if CurrentUnreadCount!=0 and LastUnreadCount!=CurrentUnreadCount:
+                        print "New Messages!"
+                        #Display notification
+                        wx.CallAfter(Notify)
+                        #Reload all conversations
+                        wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",data=None)
+                        LastUnreadCount = CurrentUnreadCount
+            except:
+                pass
+                #Eventually a pop-up to say there was no internet connection.
             sleep(5)

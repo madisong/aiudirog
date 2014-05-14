@@ -3,6 +3,7 @@ import sys
 from lib.UI.MsgsPanel import *
 from wx import GetClientDisplayRect as GCDR
 from lib.Tools.Globals import *
+from PreferenceEditor import PreferenceEditor
 
 class MainFrame(wx.Frame):
     def __init__(self, parent, title):
@@ -14,15 +15,24 @@ class MainFrame(wx.Frame):
                           pos=(x,GCDR()[1]))
         Panel = MsgsPanel(self)
         
-        #Setup the notification
+        optmenu = wx.Menu()
+        PrefID = wx.NewId()
+        optmenu.Append(PrefID, "&Preferences"," ")
+        self.Bind(wx.EVT_MENU, self.Options, id=PrefID)
+        # Creating the menubar.
+        menuBar = wx.MenuBar()
+        menuBar.Append(optmenu,"&Options")
+        self.SetMenuBar(menuBar)
         
         Globals.Frame = self
         
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Show()
         self.Layout()
+        
+    def Options(self, event=None):
+        PreferenceEditor()
 
     def OnClose(self, event):
         sys.exit()
-        event.Skip()
 

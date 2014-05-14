@@ -48,7 +48,8 @@ class MsgsPanel(scrolled.ScrolledPanel):
         except gv.util.LoginError:
             Error = wx.MessageDialog(self, 
                                      "Login to Google Voice account failed. "\
-                                     "Please check internet connection, username, and password.",
+                                     "Please check internet connection, "\
+                                     "username, and password.",
                                      caption="Login Error", style=wx.ICON_ERROR)
             Error.ShowModal()
             return
