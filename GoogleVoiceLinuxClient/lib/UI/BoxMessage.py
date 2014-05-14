@@ -1,11 +1,7 @@
 import wx
 from lib.UI.MsgPopUp import *
-try: 
-    from wx.lib.pubsub import Publisher as pub
-except: 
-    print "Changing publisher version"
-    from wx.lib.pubsub import setuparg1
-    from wx.lib.pubsub import pub
+from wx.lib.pubsub import setupv1
+from wx.lib.pubsub import Publisher as pubv
 
 class BoxMessage(wx.Panel):
     def __init__(self, parent, convo, *args, **kws):

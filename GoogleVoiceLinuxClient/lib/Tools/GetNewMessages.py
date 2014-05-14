@@ -4,10 +4,8 @@ from threading import Thread
 from lib.Tools.pygooglevoicepatches import *
 import googlevoice as gv
 import BeautifulSoup
-try: from wx.lib.pubsub import Publisher as pub
-except: 
-    from wx.lib.pubsub import setuparg1
-    from wx.lib.pubsub import pub
+from wx.lib.pubsub import setupv1
+from wx.lib.pubsub import Publisher as pub
 
 class GetNewMsgs(Thread):
     def __init__(self,runwhat,arg=None):

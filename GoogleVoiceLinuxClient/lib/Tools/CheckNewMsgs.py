@@ -1,10 +1,8 @@
 import wx
 from lib.Tools.Globals import *
 from threading import Thread
-try: from wx.lib.pubsub import Publisher as pub
-except: 
-    from wx.lib.pubsub import setuparg1
-    from wx.lib.pubsub import pub
+from wx.lib.pubsub import setupv1
+from wx.lib.pubsub import Publisher as pub
 from time import sleep
 try:
     from json import loads

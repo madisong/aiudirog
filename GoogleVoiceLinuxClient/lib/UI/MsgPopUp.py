@@ -1,10 +1,8 @@
 import wx
 from lib.UI.ConvoMsg import *
 import  wx.lib.scrolledpanel as scrolled
-try: from wx.lib.pubsub import Publisher as pub
-except: 
-    from wx.lib.pubsub import setuparg1
-    from wx.lib.pubsub import pub
+from wx.lib.pubsub import setupv1
+from wx.lib.pubsub import Publisher as pub
 
 class MsgPopUp(wx.Dialog):
     def __init__(self, parent=None, CONVO=None, *args, **kw):
@@ -48,5 +46,5 @@ class Conversation(scrolled.ScrolledPanel):
             MessageBox.msg.Wrap(self.Parent.GetSize()[0]-30)
             
     def ReLoad(self,data=None):
-        self.CONVO = data.data
+        self.CONVO = data
         self.LoadConversation()

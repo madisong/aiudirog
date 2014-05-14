@@ -7,10 +7,8 @@ from lib.Tools.GetNewMessages import *
 import googlevoice as gv
 import BeautifulSoup
 from lib.Tools.pygooglevoicepatches import *
-try: from wx.lib.pubsub import Publisher as pub
-except: 
-    from wx.lib.pubsub import setuparg1
-    from wx.lib.pubsub import pub
+from wx.lib.pubsub import setupv1
+from wx.lib.pubsub import Publisher as pub
 import keyring
 
 class MsgsPanel(scrolled.ScrolledPanel):
