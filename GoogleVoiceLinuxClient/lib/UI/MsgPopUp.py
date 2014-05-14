@@ -7,7 +7,12 @@ from wx.lib.pubsub import Publisher as pub
 
 class MsgPopUp(wx.Frame):
     def __init__(self, parent=None, CONVO=None, ID=None, *args, **kw):
-        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY)
+        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, size=(450,600))
+        
+        for c in CONVO:
+            NAME = c['from']
+            if NAME != "Me:": break
+        self.SetTitle(NAME.rstrip(":"))
         
         self.ConvoPanel = MainConvoPanel(self,CONVO,ID)
         self.Layout()
@@ -51,12 +56,13 @@ class Conversation(scrolled.ScrolledPanel):
         self.MSGBox.Clear(True)
         for msg in self.CONVO:
             MessageBox = ConvoMsg(self,msg)
-            self.MSGBox.Add(MessageBox,0,wx.EXPAND|wx.LEFT|wx.RIGHT,5)
-            MessageBox.msg.Wrap(self.Parent.Parent.GetSize()[0]-30)
+            self.MSGBox.Add(MessageBox,0,wx.EXPAND|wx.LEFT|wx.RIGHT,0)
+            MessageBox.msg.Wrap(self.Parent.Parent.GetSize()[0]-50)
         Globals.Voice._Message__messages_post('mark', self.ID, read=1)
         self.SetSizer(self.MSGBox)
         self.SetAutoLayout(1)
-        self.SetupScrolling()
+        self.SetupScrolling(scrollToTop=False)
+        self.Scroll(-1,999999)
             
 
 class TextBox(wx.Panel):
@@ -88,4 +94,5 @@ class TextBox(wx.Panel):
             return
         Globals.Voice.send_sms(self.CONVO[0]["number"], text)
         self.TextEntry.Clear()
+        wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",data=None)
         

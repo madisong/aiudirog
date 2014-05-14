@@ -10,7 +10,9 @@ class Notify(Thread):
         self.start()
         
     def run(self):
-        self.toaster = TB.ToasterBox(Globals.Frame, tbstyle=TB.TB_SIMPLE)
+        self.toaster = TB.ToasterBox(Globals.Frame, tbstyle=TB.TB_SIMPLE|TB.TB_ONCLICK)
         self.toaster.SetPopupPauseTime(3000)
+        self.toaster.SetPopupBackgroundColour("#AFEEEE")
         self.toaster.SetPopupText("Google Voice: New Messages")
+        #self.toaster.Bind(wx.EVT_LEFT_UP,Globals.Frame.SetFocus())
         wx.CallAfter(self.toaster.Play)
