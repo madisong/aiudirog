@@ -14,6 +14,7 @@ try:
 except ImportError:
     from urllib.request import Request,urlopen
 
+
 class CheckNewMsgs(Thread):
     def __init__(self):
         Thread.__init__(self)
@@ -26,8 +27,8 @@ class CheckNewMsgs(Thread):
         while True:
             unread = loads(urlopen(Request("https://www.google.com/voice/request/unread")).read())
             CurrentUnreadCount = unread["unreadCounts"][Globals.CurrentFolder]
-            if CurrentUnreadCount == 0:
-                LastUnreadCount = 0
+            if CurrentUnreadCount < LastUnreadCount:
+                LastUnreadCount = CurrentUnreadCount
             if CurrentUnreadCount!=0 and LastUnreadCount!=CurrentUnreadCount:
                     print "New Messages!"
                     wx.CallAfter(Notify)

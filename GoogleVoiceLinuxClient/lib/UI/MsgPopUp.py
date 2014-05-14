@@ -7,7 +7,7 @@ from wx.lib.pubsub import Publisher as pub
 
 class MsgPopUp(wx.Frame):
     def __init__(self, parent=None, CONVO=None, ID=None, *args, **kw):
-        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, size=(450,600))
+        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, size=(450,500))
         
         for c in CONVO:
             NAME = c['from']
@@ -15,7 +15,7 @@ class MsgPopUp(wx.Frame):
         self.SetTitle(NAME.rstrip(":"))
         
         self.ConvoPanel = MainConvoPanel(self,CONVO,ID)
-        self.Bind(wx.EVT_SIZE,self.ConvoPanel.Conversation.OnSize())
+        
         self.Layout()
         
         
@@ -64,12 +64,6 @@ class Conversation(scrolled.ScrolledPanel):
         self.SetAutoLayout(1)
         self.SetupScrolling(scrollToTop=False)
         self.Scroll(-1,999999)
-    
-    def OnSize(self, event=None):
-        allitems = self.MSGBox.GetChildren()
-        for item in allitems:
-            item.GetWindow().msg.Wrap(event.GetSize()[0])
-        event.Skip()
             
 
 class TextBox(wx.Panel):
