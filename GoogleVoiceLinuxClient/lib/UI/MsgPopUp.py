@@ -15,6 +15,7 @@ class MsgPopUp(wx.Frame):
         self.SetTitle(NAME.rstrip(":"))
         
         self.ConvoPanel = MainConvoPanel(self,CONVO,ID)
+        self.Bind(wx.EVT_SIZE,self.ConvoPanel.Conversation.OnSize())
         self.Layout()
         
         
@@ -63,6 +64,12 @@ class Conversation(scrolled.ScrolledPanel):
         self.SetAutoLayout(1)
         self.SetupScrolling(scrollToTop=False)
         self.Scroll(-1,999999)
+    
+    def OnSize(self, event=None):
+        allitems = self.MSGBox.GetChildren()
+        for item in allitems:
+            item.GetWindow().msg.Wrap(event.GetSize()[0])
+        event.Skip()
             
 
 class TextBox(wx.Panel):
@@ -85,8 +92,9 @@ class TextBox(wx.Panel):
         keycode = event.GetKeyCode()
         shift = event.ShiftDown()
         if shift and keycode == wx.WXK_RETURN or keycode == wx.WXK_NUMPAD_ENTER:
-                self.Send()
-        event.Skip()
+            self.Send()
+        else:
+            event.Skip()
     
     def Send(self, event=None):
         text = self.TextEntry.GetValue()
