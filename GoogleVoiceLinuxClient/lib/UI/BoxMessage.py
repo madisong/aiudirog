@@ -34,6 +34,8 @@ class BoxMessage(wx.Panel):
         self.name.Bind(wx.EVT_LEFT_UP, self.PopUp)
         self.msg.Bind(wx.EVT_LEFT_UP, self.PopUp)
         
+        self.SetBackgroundColour("#FFFFFF")
+        
         self.SetSizer(hbox)
         self.Fit()
 
@@ -45,5 +47,8 @@ class BoxMessage(wx.Panel):
         self.name.SetLabel(MSG)
 
     def PopUp(self, instance):
-        self.POP = MsgPopUp(self, self.CONVO,self.ID)
-        self.POP.Show()
+        if self.ID not in Globals.OpenConvos:
+            self.POP = MsgPopUp(self, self.CONVO,self.ID)
+            self.POP.Show()
+        else:
+            wx.CallAfter(pub.sendMessage,"RAISE"+self.ID,data=None)

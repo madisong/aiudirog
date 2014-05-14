@@ -14,7 +14,13 @@ class MsgPopUp(wx.Frame):
             if NAME != "Me:": break
         self.SetTitle(NAME.rstrip(":"))
         
+        self.ID = ID
+        Globals.OpenConvos.append(self.ID)
+        
         self.ConvoPanel = MainConvoPanel(self,CONVO,ID)
+        
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
+        pub.subscribe(self.RaiseWin,"RAISE"+self.ID)
         
         self.Layout()
         
@@ -22,13 +28,20 @@ class MsgPopUp(wx.Frame):
     def LoadConvo(self,event=None):
         self.ConvoPanel.LoadConversation()
         self.Layout()
+
+    def OnClose(self, event):
+        Globals.OpenConvos.remove(self.ID)
+        event.Skip()
+        
+    def RaiseWin(self, event):
+        self.RequestUserAttention(1)
+        self.Raise()
         
     
 class MainConvoPanel(wx.Panel):
     def __init__(self, parent, CONVO, ID, *args, **kws):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY,style=wx.BORDER_SUNKEN)
         vbox = wx.BoxSizer(wx.VERTICAL)
-        
         
         self.Conversation = Conversation(self,CONVO, ID)
         
@@ -92,7 +105,7 @@ class TextBox(wx.Panel):
     
     def Send(self, event=None):
         text = self.TextEntry.GetValue()
-        if text == "":
+        if text == "" or text.replace("\n","") == "":
             return
         Globals.Voice.send_sms(self.CONVO[0]["number"], text)
         self.TextEntry.Clear()

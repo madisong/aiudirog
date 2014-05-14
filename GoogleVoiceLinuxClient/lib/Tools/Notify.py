@@ -2,6 +2,7 @@ import wx
 import wx.lib.agw.toasterbox as TB
 from lib.Tools.Globals import *
 from threading import Thread
+from wx import GetClientDisplayRect as GCDR
 
 
 class Notify(Thread):

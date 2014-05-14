@@ -33,7 +33,7 @@ class MsgsPanel(scrolled.ScrolledPanel):
         self.Bind(wx.EVT_BUTTON, self.Login, id=1)
         self.LoginScreen.Password.Bind(wx.EVT_TEXT_ENTER, self.Login)
         
-        self.SetBackgroundColour("#FFD700")
+        self.SetBackgroundColour("#AFEEEE")
         
         self.SetSizer(MainSizer)
         self.SetAutoLayout(1)

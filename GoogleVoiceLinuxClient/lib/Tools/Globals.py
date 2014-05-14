@@ -5,3 +5,4 @@ class Globals():
     CurrentFolder = None
     userdata = None
     Frame = None
+    OpenConvos = []

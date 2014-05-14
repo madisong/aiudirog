@@ -21,6 +21,8 @@ class ConvoMsg(wx.Panel):
         
         if NAME != "Me:":
             self.SetBackgroundColour("#AFEEEE")
+        else:
+            self.SetBackgroundColour("#FFFFFF")
         
         self.SetSizer(hbox)
         self.Fit()

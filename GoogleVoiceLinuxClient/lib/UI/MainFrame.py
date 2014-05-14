@@ -22,6 +22,7 @@ class MainFrame(wx.Frame):
         self.Show()
         self.Layout()
 
-    def OnClose(self, instance):
+    def OnClose(self, event):
         sys.exit()
+        event.Skip()
 
