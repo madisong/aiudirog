@@ -58,6 +58,7 @@ class GetNewMsgs(Thread):
         """
         #   Extract all conversations by searching for a DIV with an ID at top level.
         tree = BeautifulSoup.BeautifulSoup(htmlsms)         # parse HTML into tree
+        
         conversations = tree.findAll("div",attrs={"id" : True},recursive=False)
         Convos = []
         for conversation in conversations:
@@ -71,6 +72,7 @@ class GetNewMsgs(Thread):
                 for span in spans :                         # for all spans in row
                     cl = span["class"].replace('gc-message-sms-', '')
                     msgitem[cl] = (" ".join(span.findAll(text=True))).strip()   # put text in dict
+                msgitem["contact_id"] = contactid
                 tmp.append(msgitem)                    # add msg dictionary to list
             Convos.append(tmp)
         return Convos
