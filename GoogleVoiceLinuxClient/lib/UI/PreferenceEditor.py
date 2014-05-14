@@ -1,7 +1,7 @@
 import wx
 from wx import ColourPickerCtrl as CPC
 from wx import EVT_COLOURPICKER_CHANGED as evt_color
-from Globals 
+from lib.Tools.Globals import *
 import  wx.lib.scrolledpanel as scrolled
 from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
@@ -10,11 +10,14 @@ class PreferenceEditor(wx.Dialog):
     def __init__(self, parent=None, *args, **kw):
         wx.Dialog.__init__(self, parent=None, id=wx.ID_ANY, size=(450,500))
         
-        self.Panel = Options(self,CONVO,ID)
+        self.Panel = Options(self)
+        self.SetTitle("Preferences")
         
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         
         self.Layout()
+        
+        self.Show()
         
         
 
@@ -34,13 +37,23 @@ class Options(scrolled.ScrolledPanel):
         MainSizer.Add(Text,0,wx.EXPAND|wx.ALL,0)
         MainSizer.Add(Buttons,0,wx.EXPAND|wx.ALL,0)
         
-        MainFrameBackgroundColor = CPC(self)
-        MainFrameBackgroundColor.Bind(evt_color, self.MainFrameBG)
-        Buttons.Add(MainFrameBackgroundColor,0,wx.EXPAND|wx.ALL,0)
-        
-        MainFrameBackgroundText = wx.StaticText(self, -1, "Message List Background Color")
-        Text.Add(MainFrameBackgroundText,0,wx.EXPAND|wx.ALL,0)
+        Windows= [("MainFrameBackgroundColor","Message List Background Color"),
+                  ("BoxMessage","Conversation List"),
+                  ("ConvoMsgME","Conversation Window- Your Messages"),
+                  ("ConvoMsgYOU","Conversation Window- Their Messages")]
+        for name, text in Windows:
+            Button = CPC(self,name=name)
+            Button.Bind(evt_color, self.SendColorChange)
+            Buttons.Add(Button,0,wx.EXPAND|wx.ALL,5)
+            
+            T = wx.StaticText(self, -1, text)
+            Text.Add(T,0,wx.EXPAND|wx.ALL,5)
         
         self.SetSizer(MainSizer)
         self.SetAutoLayout(1)
         self.SetupScrolling()
+        
+    def SendColorChange(self, event):
+        color = event.GetColour()
+        obj = event.GetEventObject()
+        wx.CallAfter(pub.sendMessage,obj.Name,data=color)

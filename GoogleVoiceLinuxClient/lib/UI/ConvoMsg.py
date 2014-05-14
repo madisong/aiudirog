@@ -1,14 +1,18 @@
 import wx
+from lib.Tools.BaseColorChangeObj import *
 
 
-class ConvoMsg(wx.Panel):
+
+class ConvoMsg(wx.Panel,BaseColorChangeObj):
     def __init__(self, parent, msg, *args, **kws):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY,style=wx.BORDER_SUNKEN)
+        BaseColorChangeObj.__init__(self,"ConvoMsg")
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         vbox = wx.BoxSizer(wx.VERTICAL)
         
         NAME = msg['from']
         MSG = msg['text']
+        
         
         self.name = wx.StaticText(self, -1, NAME)
         self.msg = wx.StaticText(self, -1, MSG)
@@ -21,8 +25,10 @@ class ConvoMsg(wx.Panel):
         
         if NAME != "Me:":
             self.SetBackgroundColour("#AFEEEE")
+            self.Name = "ConvoMsgME"
         else:
             self.SetBackgroundColour("#FFFFFF")
+            self.Name = "ConvoMsgYOU"
         
         self.SetSizer(hbox)
         self.Fit()

@@ -11,9 +11,12 @@ from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
 import keyring
 
-class MsgsPanel(scrolled.ScrolledPanel):
+from lib.Tools.BaseColorChangeObj import *
+
+class MsgsPanel(scrolled.ScrolledPanel,BaseColorChangeObj):
     def __init__(self, parent):
         scrolled.ScrolledPanel.__init__(self,parent,-1,style=wx.TAB_TRAVERSAL)
+        BaseColorChangeObj.__init__(self,"MainFrameBackgroundColor")
         MainSizer = wx.BoxSizer(wx.VERTICAL)
         self.MSGBox = wx.BoxSizer(wx.VERTICAL)
         self.LoadMoreBox = wx.BoxSizer(wx.VERTICAL)

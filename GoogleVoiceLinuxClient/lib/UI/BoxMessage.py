@@ -2,10 +2,13 @@ import wx
 from lib.UI.MsgPopUp import *
 from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
+from lib.Tools.BaseColorChangeObj import *
 
-class BoxMessage(wx.Panel):
+
+class BoxMessage(wx.Panel,BaseColorChangeObj):
     def __init__(self, parent, convo, *args, **kws):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY,style=wx.BORDER_SUNKEN)
+        BaseColorChangeObj.__init__(self,"BoxMessage")
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         vbox = wx.BoxSizer(wx.VERTICAL)
         
