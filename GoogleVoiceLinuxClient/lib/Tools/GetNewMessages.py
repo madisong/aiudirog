@@ -23,11 +23,12 @@ class GetNewMsgs(Thread):
         tmpfolder = fetchfolderpage(Globals.Voice,self.arg,1)
         tmpfolder()
         Convos = self.extractsms(tmpfolder.html)
-        
         wx.CallAfter(pub.sendMessage,"LoadFolder",data=Convos)
         
     def ReLoadFolder(self):
         size = len(self.arg)
+        while size%10 != 0:
+            size += 1
         pages = size/10
         Convos = []
         
@@ -72,7 +73,8 @@ class GetNewMsgs(Thread):
                 for span in spans :                         # for all spans in row
                     cl = span["class"].replace('gc-message-sms-', '')
                     msgitem[cl] = (" ".join(span.findAll(text=True))).strip()   # put text in dict
-                msgitem["contact_id"] = contactid
+                    if cl == "text":
+                        msgitem[cl] = msgitem[cl].replace("&lt;3", "<3")
                 tmp.append(msgitem)                    # add msg dictionary to list
             Convos.append(tmp)
         return Convos

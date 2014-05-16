@@ -24,6 +24,8 @@ class CheckNewMsgs(Thread):
         while True:
             unread = loads(urlopen(Request("https://www.google.com/voice/request/unread")).read())
             CurrentUnreadCount = unread["unreadCounts"][Globals.CurrentFolder]
+            if CurrentUnreadCount == 0:
+                LastUnreadCount = 0
             if CurrentUnreadCount!=0 and LastUnreadCount!=CurrentUnreadCount:
                     print "New Messages!"
                     wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",data=None)

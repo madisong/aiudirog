@@ -1,7 +1,7 @@
 import wx
 from lib.UI.MsgPopUp import *
 from wx.lib.pubsub import setupv1
-from wx.lib.pubsub import Publisher as pubv
+from wx.lib.pubsub import Publisher as pub
 
 class BoxMessage(wx.Panel):
     def __init__(self, parent, convo, *args, **kws):

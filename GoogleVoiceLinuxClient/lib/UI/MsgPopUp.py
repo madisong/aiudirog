@@ -26,7 +26,7 @@ class MainConvoPanel(wx.Panel):
         self.Conversation = Conversation(self,CONVO)
         vbox.Add(self.Conversation,5,wx.EXPAND|wx.LEFT|wx.RIGHT,5)
         
-        self.TextEntry = TextBox(self,CONVO, size=(-1,100), style=wx.TE_MULTILINE)
+        self.TextEntry = TextBox(self,CONVO)
         vbox.Add(self.TextEntry,0,wx.EXPAND,0)
         
         self.SetSizer(vbox)
@@ -54,10 +54,11 @@ class Conversation(scrolled.ScrolledPanel):
         for msg in self.CONVO:
             MessageBox = ConvoMsg(self,msg)
             self.MSGBox.Add(MessageBox,0,wx.EXPAND|wx.LEFT|wx.RIGHT,5)
-            MessageBox.msg.Wrap(self.Parent.GetSize()[0]-30)
+            MessageBox.msg.Wrap(self.Parent.Parent.GetSize()[0]-30)
             
     def ReLoad(self,data=None):
-        self.CONVO = data
+        self.CONVO = data.data
+        print True
         self.LoadConversation()
 
 class TextBox(wx.Panel):
@@ -65,13 +66,23 @@ class TextBox(wx.Panel):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY,style=wx.BORDER_SUNKEN)
         self.CONVO = CONVO
         hbox = wx.BoxSizer(wx.HORIZONTAL)
-        self.TextEntry = wx.TextCtrl(self,
-                                    style=wx.TE_PASSWORD|wx.TE_PROCESS_ENTER)
-        self.TextEntry.Bind(wx.EVT_TEXT_ENTER, self.Send)
-        hbox.Add(self.TextEntry,0,wx.EXPAND|wx.ALL,5)
+        self.TextEntry = wx.TextCtrl(self,style=wx.TE_MULTILINE)
+        self.TextEntry.Bind(wx.EVT_KEY_DOWN, self.onKeyPress)
+        hbox.Add(self.TextEntry,5,wx.EXPAND|wx.ALL,5)
+        
+        self.SendButton = wx.Button(self, 2, "Send")
+        self.SendButton.Bind(wx.EVT_BUTTON, self.Send)
+        hbox.Add(self.SendButton,1,wx.EXPAND|wx.ALL,5)
+        
         self.SetSizer(hbox)
         self.Layout()
-        
+    
+    def onKeyPress(self, event=None):
+        keycode = event.GetKeyCode()
+        shift = event.ShiftDown()
+        if shift and keycode == wx.WXK_RETURN or keycode == wx.WXK_NUMPAD_ENTER:
+                self.Send()
+    
     def Send(self, event=None):
         print Globals.userdata
         #Globals.Voice.send_sms(phoneNumber, self.TextEntry.GetValue())
