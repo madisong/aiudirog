@@ -40,7 +40,7 @@ class Conversation(scrolled.ScrolledPanel):
         
         self.ID = CONVO[0]['id']
         pub.subscribe(self.ReLoad, self.ID)
-        
+        print self.ID
         self.LoadConversation()
         
         self.SetSizer(self.MSGBox)
