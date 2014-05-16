@@ -39,7 +39,7 @@ class Conversation(scrolled.ScrolledPanel):
         self.CONVO = CONVO
         
         self.ID = CONVO[0]['id']
-        pub.subscribe(self.ReLoad, self.ID)
+        pub.subscribe(self.ReLoad,str(self.ID))
         print self.ID
         self.LoadConversation()
         
@@ -57,8 +57,9 @@ class Conversation(scrolled.ScrolledPanel):
             MessageBox.msg.Wrap(self.Parent.Parent.GetSize()[0]-30)
             
     def ReLoad(self,data=None):
-        self.CONVO = data.data
         print True
+        self.CONVO = data.data
+        
         self.LoadConversation()
 
 class TextBox(wx.Panel):
