@@ -16,10 +16,10 @@ class BoxMessage(wx.Panel):
         MSG = convo[-1]['text'].replace("\n","")
         if len(MSG) > 35:
             MSG = MSG[:35]+"..."
-        self.ID = convo[0]['id']
+        self.ID = str(convo[0]['id'])
         
         self.CONVO = convo
-        wx.CallAfter(pub.sendMessage,str(self.ID),data=self.CONVO)
+        wx.CallAfter(pub.sendMessage,self.ID,data=self.CONVO)
         print self.ID
         
         self.name = wx.StaticText(self, -1, NAME)
@@ -41,9 +41,10 @@ class BoxMessage(wx.Panel):
     def ChangeName(self,NAME):
         self.name.SetLabel(NAME)
     
+    
     def ChangeMsg(self,MSG):
         self.name.SetLabel(MSG)
 
     def PopUp(self, instance):
-        self.POP = MsgPopUp(self, self.CONVO)
+        self.POP = MsgPopUp(self, self.CONVO,self.ID)
         self.POP.Show()

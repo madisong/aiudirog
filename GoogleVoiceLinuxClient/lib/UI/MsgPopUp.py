@@ -6,10 +6,10 @@ from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
 
 class MsgPopUp(wx.Frame):
-    def __init__(self, parent=None, CONVO=None, *args, **kw):
-        wx.Frame.__init__(self, parent=parent, id=wx.ID_ANY)
+    def __init__(self, parent=None, CONVO=None, ID=None, *args, **kw):
+        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY)
         
-        self.ConvoPanel = MainConvoPanel(self,CONVO)
+        self.ConvoPanel = MainConvoPanel(self,CONVO,ID)
         self.Layout()
         
         
@@ -19,11 +19,13 @@ class MsgPopUp(wx.Frame):
         
     
 class MainConvoPanel(wx.Panel):
-    def __init__(self, parent, CONVO, *args, **kws):
+    def __init__(self, parent, CONVO, ID, *args, **kws):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY,style=wx.BORDER_SUNKEN)
         vbox = wx.BoxSizer(wx.VERTICAL)
         
-        self.Conversation = Conversation(self,CONVO)
+        
+        self.Conversation = Conversation(self,CONVO, ID)
+        
         vbox.Add(self.Conversation,5,wx.EXPAND|wx.LEFT|wx.RIGHT,5)
         
         self.TextEntry = TextBox(self,CONVO)
@@ -33,34 +35,28 @@ class MainConvoPanel(wx.Panel):
         self.Layout()
 
 class Conversation(scrolled.ScrolledPanel):
-    def __init__(self, parent, CONVO):
+    def __init__(self, parent, CONVO, ID):
         scrolled.ScrolledPanel.__init__(self,parent,-1,style=wx.TAB_TRAVERSAL)
         self.MSGBox = wx.BoxSizer(wx.VERTICAL)
         self.CONVO = CONVO
         
-        self.ID = CONVO[0]['id']
-        pub.subscribe(self.ReLoad,str(self.ID))
-        print self.ID
+        self.ID = ID
+        pub.subscribe(self.LoadConversation,self.ID)
         self.LoadConversation()
         
-        self.SetSizer(self.MSGBox)
-        self.SetAutoLayout(1)
-        self.SetupScrolling()
     
     def LoadConversation(self, CONVO=None):
         if CONVO != None:
-            self.CONVO = CONVO
+            self.CONVO = CONVO.data
         self.MSGBox.Clear(True)
         for msg in self.CONVO:
             MessageBox = ConvoMsg(self,msg)
             self.MSGBox.Add(MessageBox,0,wx.EXPAND|wx.LEFT|wx.RIGHT,5)
             MessageBox.msg.Wrap(self.Parent.Parent.GetSize()[0]-30)
+        self.SetSizer(self.MSGBox)
+        self.SetAutoLayout(1)
+        self.SetupScrolling()
             
-    def ReLoad(self,data=None):
-        print True
-        self.CONVO = data.data
-        
-        self.LoadConversation()
 
 class TextBox(wx.Panel):
     def __init__(self, parent, CONVO, *args, **kws):
@@ -83,8 +79,12 @@ class TextBox(wx.Panel):
         shift = event.ShiftDown()
         if shift and keycode == wx.WXK_RETURN or keycode == wx.WXK_NUMPAD_ENTER:
                 self.Send()
+        event.Skip()
     
     def Send(self, event=None):
-        print Globals.userdata
-        #Globals.Voice.send_sms(phoneNumber, self.TextEntry.GetValue())
+        text = self.TextEntry.GetValue()
+        if text == "":
+            return
+        Globals.Voice.send_sms(self.CONVO[0]["number"], text)
+        self.TextEntry.Clear()
         

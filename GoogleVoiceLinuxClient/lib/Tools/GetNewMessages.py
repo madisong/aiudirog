@@ -6,6 +6,7 @@ import googlevoice as gv
 import BeautifulSoup
 from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
+import re
 
 class GetNewMsgs(Thread):
     def __init__(self,runwhat,arg=None):
@@ -63,6 +64,11 @@ class GetNewMsgs(Thread):
         conversations = tree.findAll("div",attrs={"id" : True},recursive=False)
         Convos = []
         for conversation in conversations:
+            number = conversation.findAll(attrs={"class" : "gc-message-type"})
+            if len(number) == 0:
+                number = conversation.findAll(attrs={"class" : "gc-nobold"})
+            number = number[0].string
+            number = re.sub('[!@#$A-z+()\s-]', '', number)
             #   For each conversation, extract each row, which is one SMS message.
             rows = conversation.findAll(attrs={"class" : "gc-message-sms-row"})
             tmp = []
@@ -75,6 +81,7 @@ class GetNewMsgs(Thread):
                     msgitem[cl] = (" ".join(span.findAll(text=True))).strip()   # put text in dict
                     if cl == "text":
                         msgitem[cl] = msgitem[cl].replace("&lt;3", "<3")
+                msgitem["number"] = number
                 tmp.append(msgitem)                    # add msg dictionary to list
             Convos.append(tmp)
         return Convos
