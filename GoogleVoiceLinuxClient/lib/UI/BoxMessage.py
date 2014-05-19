@@ -20,7 +20,6 @@ class BoxMessage(wx.Panel):
         
         self.CONVO = convo
         wx.CallAfter(pub.sendMessage,self.ID,data=self.CONVO)
-        print self.ID
         
         self.name = wx.StaticText(self, -1, NAME)
         self.msg = wx.StaticText(self, -1, MSG)

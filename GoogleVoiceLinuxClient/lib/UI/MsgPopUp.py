@@ -53,6 +53,7 @@ class Conversation(scrolled.ScrolledPanel):
             MessageBox = ConvoMsg(self,msg)
             self.MSGBox.Add(MessageBox,0,wx.EXPAND|wx.LEFT|wx.RIGHT,5)
             MessageBox.msg.Wrap(self.Parent.Parent.GetSize()[0]-30)
+        Globals.Voice._Message__messages_post('mark', self.ID, read=1)
         self.SetSizer(self.MSGBox)
         self.SetAutoLayout(1)
         self.SetupScrolling()

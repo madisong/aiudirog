@@ -1,5 +1,6 @@
 import wx
 from lib.Tools.Globals import *
+from lib.Tools.Notify import *
 from threading import Thread
 from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
@@ -16,6 +17,7 @@ except ImportError:
 class CheckNewMsgs(Thread):
     def __init__(self):
         Thread.__init__(self)
+        
         self.start()
         
     def run(self):
@@ -26,9 +28,9 @@ class CheckNewMsgs(Thread):
             CurrentUnreadCount = unread["unreadCounts"][Globals.CurrentFolder]
             if CurrentUnreadCount == 0:
                 LastUnreadCount = 0
-            wx.CallAfter(pub.sendMessage,"HELP2342534gtvraegt345q234wfdasr5q3452342314",data=None)
             if CurrentUnreadCount!=0 and LastUnreadCount!=CurrentUnreadCount:
                     print "New Messages!"
+                    wx.CallAfter(Notify)
                     wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",data=None)
                     LastUnreadCount = CurrentUnreadCount
             sleep(5)

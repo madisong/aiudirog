@@ -4,3 +4,4 @@ class Globals():
     Voice = Voice()
     CurrentFolder = None
     userdata = None
+    Frame = None
