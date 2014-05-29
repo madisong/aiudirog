@@ -39,11 +39,13 @@ class MainFrame(wx.Frame):
         self.Show()
         self.Layout()
         
+        
     def Options(self, event=None):
         PreferenceEditor()
 
     def OnClose(self, event):
         self.Destroy()
+        print True
         sys.exit()
     
     def Compose(self, event=None):

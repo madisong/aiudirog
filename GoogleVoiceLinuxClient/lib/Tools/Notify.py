@@ -3,6 +3,12 @@ import wx.lib.agw.toasterbox as TB
 from lib.Tools.Globals import *
 from threading import Thread
 from wx import GetClientDisplayRect as GCDR
+try:
+    import pygame.mixer as mixer
+    mixer.init(44100)
+    mixer.music.load('Yah.wav')
+except:
+    mixer = None
 
 
 class Notify(Thread):
@@ -29,6 +35,9 @@ class Notify(Thread):
         self.toaster.AddPanel(panel)
 
         wx.CallAfter(self.toaster.Play)
+        
+        if mixer:
+            mixer.music.play() 
     
     def RequestUser(self, event=None):
         Globals.Frame.RequestUserAttention(1)
