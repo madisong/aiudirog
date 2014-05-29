@@ -11,8 +11,6 @@ class BaseColorChangeObj():
     """
     def __init__(self, Name):
         pub.subscribe(self.ChangeColor,Name)
-        print True
     
     def ChangeColor(self, data):
         self.SetBackgroundColour(data.data)
-        print True

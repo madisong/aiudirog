@@ -1,12 +1,15 @@
 import wx
+from lib.Tools.Globals import *
 from lib.Tools.BaseColorChangeObj import *
+import json
+from lib.Tools.ExtraFunctions import *
 
 
 
 class ConvoMsg(wx.Panel,BaseColorChangeObj):
     def __init__(self, parent, msg, *args, **kws):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY,style=wx.BORDER_SUNKEN)
-        BaseColorChangeObj.__init__(self,"ConvoMsg")
+        
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         vbox = wx.BoxSizer(wx.VERTICAL)
         
@@ -24,12 +27,18 @@ class ConvoMsg(wx.Panel,BaseColorChangeObj):
         hbox.Add(vbox, 0, wx.EXPAND|wx.ALL, 0)
         
         if NAME != "Me:":
-            self.SetBackgroundColour("#AFEEEE")
+            color = "#AFEEEE"
             self.Name = "ConvoMsgME"
+            
         else:
-            self.SetBackgroundColour("#FFFFFF")
+            color = "#FFFFFF"
             self.Name = "ConvoMsgYOU"
-        
+        try: 
+            self.SetBackgroundColour(GetTupleFromString(
+                                             Globals.INI.get("MAIN",self.Name)))
+        except: 
+            self.SetBackgroundColour(color)
+        BaseColorChangeObj.__init__(self,self.Name)
         self.SetSizer(hbox)
         self.Fit()
 

@@ -6,3 +6,5 @@ class Globals():
     userdata = None
     Frame = None
     OpenConvos = []
+    INI = None
+    ini_path = None

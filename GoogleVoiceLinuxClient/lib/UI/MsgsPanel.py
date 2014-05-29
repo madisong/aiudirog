@@ -36,7 +36,11 @@ class MsgsPanel(scrolled.ScrolledPanel,BaseColorChangeObj):
         self.Bind(wx.EVT_BUTTON, self.Login, id=1)
         self.LoginScreen.Password.Bind(wx.EVT_TEXT_ENTER, self.Login)
         
-        self.SetBackgroundColour("#AFEEEE")
+        try: 
+            self.SetBackgroundColour(GetTupleFromString(
+                                             Globals.INI.get("MAIN","MainFrameBackgroundColor")))
+        except: 
+            self.SetBackgroundColour("#AFEEEE")
         
         self.SetSizer(MainSizer)
         self.SetAutoLayout(1)

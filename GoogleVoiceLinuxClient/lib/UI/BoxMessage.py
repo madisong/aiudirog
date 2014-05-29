@@ -9,6 +9,13 @@ class BoxMessage(wx.Panel,BaseColorChangeObj):
     def __init__(self, parent, convo, *args, **kws):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY,style=wx.BORDER_SUNKEN)
         BaseColorChangeObj.__init__(self,"BoxMessage")
+        
+        try: 
+            self.SetBackgroundColour(GetTupleFromString(
+                                             Globals.INI.get("MAIN","BoxMessage")))
+        except: 
+            self.SetBackgroundColour("#FFFFFF")
+        
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         vbox = wx.BoxSizer(wx.VERTICAL)
         
@@ -36,8 +43,6 @@ class BoxMessage(wx.Panel,BaseColorChangeObj):
         self.Bind(wx.EVT_LEFT_UP, self.PopUp)
         self.name.Bind(wx.EVT_LEFT_UP, self.PopUp)
         self.msg.Bind(wx.EVT_LEFT_UP, self.PopUp)
-        
-        self.SetBackgroundColour("#FFFFFF")
         
         self.SetSizer(hbox)
         self.Fit()

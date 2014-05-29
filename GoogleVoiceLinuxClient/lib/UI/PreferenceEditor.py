@@ -13,17 +13,9 @@ class PreferenceEditor(wx.Dialog):
         self.Panel = Options(self)
         self.SetTitle("Preferences")
         
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
-        
         self.Layout()
         
         self.Show()
-        
-        
-
-    def OnClose(self, event):
-        Globals.OpenConvos.remove(self.ID)
-        event.Skip()
     
     
     
@@ -56,4 +48,7 @@ class Options(scrolled.ScrolledPanel):
     def SendColorChange(self, event):
         color = event.GetColour()
         obj = event.GetEventObject()
+        Globals.INI.set("MAIN", obj.Name, color)
+        with open(Globals.ini_path, "r+") as ini:
+            Globals.INI.write(ini)
         wx.CallAfter(pub.sendMessage,obj.Name,data=color)
