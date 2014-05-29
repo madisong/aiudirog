@@ -28,16 +28,21 @@ class ConvoMsg(wx.Panel,BaseColorChangeObj):
         
         if NAME != "Me:":
             color = "#AFEEEE"
-            self.Name = "ConvoMsgME"
-            
+            self.Name = "ConvoMsgYOU"
         else:
             color = "#FFFFFF"
-            self.Name = "ConvoMsgYOU"
+            self.Name = "ConvoMsgME"
         try: 
             self.SetBackgroundColour(GetTupleFromString(
                                              Globals.INI.get("MAIN",self.Name)))
         except: 
             self.SetBackgroundColour(color)
+        try: 
+            color = GetTupleFromString(Globals.INI.get("MAIN",self.Name+"TEXT"))
+            self.name.SetForegroundColour(color)
+            self.msg.SetForegroundColour(color)
+        except: 
+            pass
         BaseColorChangeObj.__init__(self,self.Name)
         self.SetSizer(hbox)
         self.Fit()

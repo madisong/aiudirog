@@ -3,6 +3,7 @@ from lib.UI.MsgPopUp import *
 from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
 from lib.Tools.BaseColorChangeObj import *
+from lib.Tools.ExtraFunctions import *
 
 
 class BoxMessage(wx.Panel,BaseColorChangeObj):
@@ -35,6 +36,14 @@ class BoxMessage(wx.Panel,BaseColorChangeObj):
         self.msg = wx.StaticText(self, -1, MSG)
         NameFont = wx.Font(12, wx.DECORATIVE, wx.FONTSTYLE_ITALIC, wx.FONTWEIGHT_BOLD)
         self.name.SetFont(NameFont)
+        
+        try: 
+            color = GetTupleFromString(Globals.INI.get("MAIN","BoxMessageTEXT"))
+            self.name.SetForegroundColour(color)
+            self.msg.SetForegroundColour(color)
+        except: 
+            pass
+        
 
         vbox.Add(self.name, 0, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 5)
         vbox.Add(self.msg, 0, wx.EXPAND|wx.BOTTOM|wx.LEFT|wx.RIGHT, 5)

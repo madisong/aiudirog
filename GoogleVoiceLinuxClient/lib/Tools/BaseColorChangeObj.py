@@ -11,6 +11,11 @@ class BaseColorChangeObj():
     """
     def __init__(self, Name):
         pub.subscribe(self.ChangeColor,Name)
+        pub.subscribe(self.ChangeTextColor,Name+"TEXT")
     
     def ChangeColor(self, data):
         self.SetBackgroundColour(data.data)
+    
+    def ChangeTextColor(self, data):
+        self.msg.SetForegroundColour(data.data)
+        self.name.SetForegroundColour(data.data)

@@ -34,5 +34,6 @@ class MainFrame(wx.Frame):
         PreferenceEditor()
 
     def OnClose(self, event):
+        self.Destroy()
         sys.exit()
 
