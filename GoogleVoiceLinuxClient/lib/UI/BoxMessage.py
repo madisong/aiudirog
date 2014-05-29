@@ -25,6 +25,7 @@ class BoxMessage(wx.Panel,BaseColorChangeObj):
             if NAME != "Me:": break
         
         MSG = convo[-1]['text'].replace("\n","")
+        
         if len(MSG) > 35:
             MSG = MSG[:35]+"..."
         self.ID = str(convo[0]['id'])
@@ -37,21 +38,29 @@ class BoxMessage(wx.Panel,BaseColorChangeObj):
         NameFont = wx.Font(12, wx.DECORATIVE, wx.FONTSTYLE_ITALIC, wx.FONTWEIGHT_BOLD)
         self.name.SetFont(NameFont)
         
+        TIME = convo[-1]['time']
+        self.time = wx.StaticText(self, -1, TIME)
+        TimeFont = wx.Font(7, wx.DECORATIVE, wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_NORMAL)
+        self.time.SetFont(TimeFont)
+        
         try: 
             color = GetTupleFromString(Globals.INI.get("MAIN","BoxMessageTEXT"))
             self.name.SetForegroundColour(color)
             self.msg.SetForegroundColour(color)
+            self.time.SetForegroundColour(color)
         except: 
             pass
         
 
         vbox.Add(self.name, 0, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 5)
         vbox.Add(self.msg, 0, wx.EXPAND|wx.BOTTOM|wx.LEFT|wx.RIGHT, 5)
+        vbox.Add(self.time, 0, wx.EXPAND|wx.BOTTOM|wx.LEFT|wx.RIGHT, 5)
         hbox.Add(vbox, 0, wx.EXPAND|wx.ALL, 0)
         
         self.Bind(wx.EVT_LEFT_UP, self.PopUp)
         self.name.Bind(wx.EVT_LEFT_UP, self.PopUp)
         self.msg.Bind(wx.EVT_LEFT_UP, self.PopUp)
+        self.time.Bind(wx.EVT_LEFT_UP, self.PopUp)
         
         self.SetSizer(hbox)
         self.Fit()

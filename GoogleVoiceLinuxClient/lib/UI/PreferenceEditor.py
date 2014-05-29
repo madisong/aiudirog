@@ -61,6 +61,6 @@ class Options(scrolled.ScrolledPanel):
         color = event.GetColour()
         obj = event.GetEventObject()
         Globals.INI.set("MAIN", obj.Name, color)
-        with open(Globals.ini_path, "r+") as ini:
+        with open(Globals.ini_path, "w+") as ini:
             Globals.INI.write(ini)
         wx.CallAfter(pub.sendMessage,obj.Name,data=color)
