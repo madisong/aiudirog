@@ -9,10 +9,11 @@ from wx.lib.pubsub import Publisher as pub
 import re
 
 class GetNewMsgs(Thread):
-    def __init__(self,runwhat,arg=None):
+    def __init__(self,runwhat,arg=None,notify=None):
         Thread.__init__(self)
         self.runwhat = runwhat
         self.arg = arg
+        self.notify = notify
         self.start()
         
     def run(self):
@@ -44,6 +45,8 @@ class GetNewMsgs(Thread):
             Convos += tmpconvo
             
         wx.CallAfter(pub.sendMessage,"ReLoadFolder",data=Convos)
+        if self.notify:
+            wx.CallAfter(Notify, Convos)
         Globals.GetNew = False
         
     def LoadMoreMessages(self):

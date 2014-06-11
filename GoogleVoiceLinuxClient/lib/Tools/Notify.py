@@ -14,9 +14,10 @@ except:
 
 
 class Notify(Thread):
-    def __init__(self):
+    def __init__(self, convos):
         Thread.__init__(self)
-        
+        notificationconvo = convos[0]
+        print notificationconvo
         self.start()
     
     def run(self):
@@ -28,13 +29,13 @@ class Notify(Thread):
     def runPynotifyVersion(self):
         if pynotify.init("GoogleVoice"):
             n = pynotify.Notification("Google Voice Linux Client",
-                                        "You have a meeting in 10 minutes.")
+                                        "New Messages.")
             n.set_urgency(pynotify.URGENCY_NORMAL)
             #n.add_action("default", "Default Action", self.RequestUser)
             
             if not n.show():
                 print "Failed to send notification"
-        
+            self.PlaySound()
     
     def runToasterVersion(self):
         self.toaster = TB.ToasterBox(Globals.Frame, tbstyle=TB.TB_COMPLEX)
@@ -53,6 +54,7 @@ class Notify(Thread):
         self.toaster.AddPanel(panel)
 
         wx.CallAfter(self.toaster.Play)
+        self.PlaySound()
         
     def PlaySound(self):
         if mixer:

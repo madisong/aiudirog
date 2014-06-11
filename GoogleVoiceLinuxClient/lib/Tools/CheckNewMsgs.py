@@ -36,10 +36,8 @@ class CheckNewMsgs(Thread):
                     LastUnreadCount = CurrentUnreadCount
                 if CurrentUnreadCount!=0 and LastUnreadCount!=CurrentUnreadCount:
                         print "New Messages!"
-                        #Display notification
-                        wx.CallAfter(Notify)
                         #Reload all conversations
-                        wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",data=None)
+                        wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",data="Notify")
                         LastUnreadCount = CurrentUnreadCount
             except:
                 pass
