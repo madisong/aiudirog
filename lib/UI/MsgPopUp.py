@@ -48,7 +48,7 @@ class MainConvoPanel(wx.Panel):
         vbox.Add(self.Conversation,5,wx.EXPAND|wx.LEFT|wx.RIGHT,5)
         
         self.TextEntry = TextBox(self,CONVO)
-        vbox.Add(self.TextEntry,0,wx.EXPAND,0)
+        vbox.Add(self.TextEntry,1,wx.EXPAND,0)
         
         self.SetSizer(vbox)
         self.Layout()

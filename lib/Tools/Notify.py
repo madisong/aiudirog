@@ -9,7 +9,6 @@ except:
 try:
     import pygame.mixer as mixer
     mixer.init(44100)
-    mixer.music.load(os.path.join(Globals.path,'Yah.wav'))
 except:
     mixer = None
 import os
@@ -68,11 +67,14 @@ class Notify(Thread):
         
     def PlaySound(self):
         if mixer:
-            try: mixer.music.play() 
+            try:
+                mixer.music.load(os.path.join(Globals.path,'resources','Yah.wav'))
+                mixer.music.play() 
+                print "Yaaaaaaaahhh"
             except:
-               mixer.init(44100)
-               mixer.music.load(os.path.join(Globals.path,'Yah.wav'))
-               mixer.music.play() 
+                mixer.init(44100)
+                mixer.music.load(os.path.join(Globals.path,'resources','Yah.wav'))
+                mixer.music.play() 
     
     def RequestUser(self, event=None):
         print True

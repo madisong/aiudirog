@@ -8,7 +8,7 @@ import ConfigParser
 #Prepare the color ini for use by other classes
 Globals.INI = ConfigParser.ConfigParser()
 Globals.path = os.path.dirname(__file__)
-Globals.ini_path = os.path.join(Globals.path,"Color.ini")
+Globals.ini_path = os.path.join(Globals.path,'resources',"Color.ini")
 Globals.INI.read(Globals.ini_path)
 
 #Start the app

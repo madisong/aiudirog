@@ -11,12 +11,18 @@ class ComposeWindow(wx.Dialog):
     
     def __init__(self, parent=None, *args, **kw):
         wx.Dialog.__init__(self, parent=None, id=wx.ID_ANY, size=(450,300))
+        #Make sure you are logged in
+        try:
+            assert Globals.Voice.special
+        except (AssertionError, AttributeError):
+            del self
+            return
+        
         self.SetWindowStyle(self.GetWindowStyle()|wx.RESIZE_BORDER)
         
         Panel = wx.Panel(self)
         
         TOtxt = wx.StaticText(Panel, -1, "To:")
-        #self.TO = wx.TextCtrl(Panel)
         self.TO = TextCtrlAutoComplete(Panel, choices=Globals.ContactNames)
         MSGtxt = wx.StaticText(Panel, -1, "Message:")
         self.MSG = wx.TextCtrl(Panel,style=wx.TE_MULTILINE)
