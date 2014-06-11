@@ -9,3 +9,4 @@ class Globals():
     INI = None
     ini_path = None
     DEAD = False
+    GetNew = False

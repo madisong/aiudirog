@@ -16,6 +16,9 @@ class GetNewMsgs(Thread):
         self.start()
         
     def run(self):
+        if Globals.GetNew:
+            return
+        Globals.GetNew = True
         getattr(self, self.runwhat)()
         
     def LoadFolder(self):
@@ -25,6 +28,7 @@ class GetNewMsgs(Thread):
         tmpfolder()
         Convos = self.extractsms(tmpfolder.html)
         wx.CallAfter(pub.sendMessage,"LoadFolder",data=Convos)
+        Globals.GetNew = False
         
     def ReLoadFolder(self):
         size = len(self.arg)
@@ -40,7 +44,8 @@ class GetNewMsgs(Thread):
             Convos += tmpconvo
             
         wx.CallAfter(pub.sendMessage,"ReLoadFolder",data=Convos)
-    
+        Globals.GetNew = False
+        
     def LoadMoreMessages(self):
         size = len(self.arg)
         page = size/10+1
@@ -51,6 +56,7 @@ class GetNewMsgs(Thread):
         self.arg = tmpconvo
         
         wx.CallAfter(pub.sendMessage,"LoadMoreMessages",data=self.arg)
+        Globals.GetNew = False
     
     def extractsms(self,htmlsms) :
         """
