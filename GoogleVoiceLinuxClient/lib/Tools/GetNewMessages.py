@@ -48,7 +48,7 @@ class GetNewMsgs(Thread):
         tmpfolder = fetchfolderpage(Globals.Voice,Globals.CurrentFolder,page)
         tmpfolder()
         tmpconvo = self.extractsms(tmpfolder.html)
-        self.arg += tmpconvo
+        self.arg = tmpconvo
         
         wx.CallAfter(pub.sendMessage,"LoadMoreMessages",data=self.arg)
     

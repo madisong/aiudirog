@@ -8,3 +8,4 @@ class Globals():
     OpenConvos = []
     INI = None
     ini_path = None
+    DEAD = False

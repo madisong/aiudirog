@@ -3,6 +3,7 @@ import sys
 from lib.UI.MsgsPanel import *
 from wx import GetClientDisplayRect as GCDR
 from lib.Tools.Globals import *
+import threading
 from PreferenceEditor import PreferenceEditor
 from ComposeWindow import ComposeWindow
 
@@ -44,8 +45,12 @@ class MainFrame(wx.Frame):
         PreferenceEditor()
 
     def OnClose(self, event):
-        self.Destroy()
-        print True
+        Globals.DEAD = True
+        x = 0
+        for thread in threading.enumerate():
+            x += 1
+        print "Running {0} threads".format(x)
+        print "Exiting"
         sys.exit()
     
     def Compose(self, event=None):

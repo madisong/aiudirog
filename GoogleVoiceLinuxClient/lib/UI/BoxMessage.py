@@ -78,3 +78,4 @@ class BoxMessage(wx.Panel,BaseColorChangeObj):
             self.POP.Show()
         else:
             wx.CallAfter(pub.sendMessage,"RAISE"+self.ID,data=None)
+            

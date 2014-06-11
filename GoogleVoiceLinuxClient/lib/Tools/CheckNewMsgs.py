@@ -24,6 +24,9 @@ class CheckNewMsgs(Thread):
         CurrentUnreadCount = 0
         LastUnreadCount = 0
         while True:
+            if Globals.DEAD == True:
+                print "Thread is breaking"
+                break
             try:
                 #Download unread counts from Google Voice API
                 unread = loads(urlopen(Request("https://www.google.com/voice/request/unread")).read())
@@ -41,4 +44,10 @@ class CheckNewMsgs(Thread):
             except:
                 pass
                 #Eventually a pop-up to say there was no internet connection.
-            sleep(5)
+            for x in range(5):
+                if Globals.DEAD == True:
+                    print "Stop checking messages, closing thread."
+                    break
+                else:
+                    sleep(1)
+            
