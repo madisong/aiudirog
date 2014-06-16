@@ -1,9 +1,10 @@
 import wx
-import wx.lib.agw.toasterbox as TB
 from lib.Tools.Globals import *
 from threading import Thread
 from wx import GetClientDisplayRect as GCDR
-import pynotify
+try: import pynotify
+except:
+    import wx.lib.agw.toasterbox as TB
 try:
     import pygame.mixer as mixer
     mixer.init(44100)
@@ -19,9 +20,12 @@ class Notify(Thread):
         self.start()
     
     def run(self):
-        self.runSystemVersion()
-        
-    def runSystemVersion(self):
+        if pynotify:
+            self.runPynotifyVersion()
+        else:
+            runToasterVersion()
+            
+    def runPynotifyVersion(self):
         if pynotify.init("GoogleVoice"):
             n = pynotify.Notification("Google Voice Linux Client",
                                         "You have a meeting in 10 minutes.")
