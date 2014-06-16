@@ -3,6 +3,7 @@ import wx.lib.agw.toasterbox as TB
 from lib.Tools.Globals import *
 from threading import Thread
 from wx import GetClientDisplayRect as GCDR
+import pynotify
 try:
     import pygame.mixer as mixer
     mixer.init(44100)
@@ -16,8 +17,22 @@ class Notify(Thread):
         Thread.__init__(self)
         
         self.start()
-        
+    
     def run(self):
+        self.runSystemVersion()
+        
+    def runSystemVersion(self):
+        if pynotify.init("GoogleVoice"):
+            n = pynotify.Notification("Google Voice Linux Client",
+                                        "You have a meeting in 10 minutes.")
+            n.set_urgency(pynotify.URGENCY_NORMAL)
+            #n.add_action("default", "Default Action", self.RequestUser)
+            
+            if not n.show():
+                print "Failed to send notification"
+        
+    
+    def runToasterVersion(self):
         self.toaster = TB.ToasterBox(Globals.Frame, tbstyle=TB.TB_COMPLEX)
         self.toaster.SetPopupPauseTime(5000)
 
@@ -27,7 +42,6 @@ class Notify(Thread):
 
         button = wx.Button(panel, wx.ID_ANY, "Google Voice:\n\nNew Messages")
         button.Bind(wx.EVT_BUTTON,self.RequestUser)
-        button.Bind(wx.EVT_BUTTON,self.Raise)
         sizer.Add(button, 0, wx.EXPAND)
 
         panel.SetSizer(sizer)
@@ -36,6 +50,7 @@ class Notify(Thread):
 
         wx.CallAfter(self.toaster.Play)
         
+    def PlaySound(self):
         if mixer:
             try: mixer.music.play() 
 	    except:
@@ -44,7 +59,8 @@ class Notify(Thread):
                mixer.music.play() 
     
     def RequestUser(self, event=None):
-        Globals.Frame.RequestUserAttention(1)
-    
-    def Raise(self, event=None):
-        Globals.Frame.Raise()
+        print True
+        try: Globals.Frame.RequestUserAttention(1)
+        except: pass
+        try: Globals.Frame.Raise()
+        except: pass
