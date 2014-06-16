@@ -10,6 +10,7 @@ from lib.Tools.pygooglevoicepatches import *
 from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
 import keyring
+import keyring.util
 
 from lib.Tools.BaseColorChangeObj import *
 
@@ -60,6 +61,7 @@ class MsgsPanel(scrolled.ScrolledPanel,BaseColorChangeObj):
                                      caption="Login Error", style=wx.ICON_ERROR)
             Error.ShowModal()
             return
+        
         del GA
         del Password
         self.LoginScreen.Destroy()

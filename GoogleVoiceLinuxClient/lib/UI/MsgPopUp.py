@@ -98,7 +98,7 @@ class TextBox(wx.Panel):
     def onKeyPress(self, event=None):
         keycode = event.GetKeyCode()
         shift = event.ShiftDown()
-        if shift and keycode == wx.WXK_RETURN or keycode == wx.WXK_NUMPAD_ENTER:
+        if not shift and keycode == wx.WXK_RETURN or keycode == wx.WXK_NUMPAD_ENTER:
             self.Send()
         else:
             event.Skip()

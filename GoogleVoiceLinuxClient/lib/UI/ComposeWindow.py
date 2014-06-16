@@ -4,6 +4,10 @@ from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
 
 class ComposeWindow(wx.Dialog):
+    """
+    Pop-up for composition of a new message.
+    """
+    
     def __init__(self, parent=None, *args, **kw):
         wx.Dialog.__init__(self, parent=None, id=wx.ID_ANY, size=(450,300))
         self.SetWindowStyle(self.GetWindowStyle()|wx.RESIZE_BORDER)

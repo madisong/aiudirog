@@ -37,11 +37,7 @@ class Notify(Thread):
         wx.CallAfter(self.toaster.Play)
         
         if mixer:
-            try: mixer.music.play() 
-	    except:
-               mixer.init(44100)
-               mixer.music.load('Yah.wav')
-               mixer.music.play() 
+            mixer.music.play() 
     
     def RequestUser(self, event=None):
         Globals.Frame.RequestUserAttention(1)
