@@ -1,6 +1,5 @@
 import wx
 from lib.Tools.Globals import *
-from lib.Tools.Notify import *
 from threading import Thread
 from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
@@ -37,7 +36,8 @@ class CheckNewMsgs(Thread):
                 if CurrentUnreadCount!=0 and LastUnreadCount!=CurrentUnreadCount:
                         print "New Messages!"
                         #Reload all conversations
-                        wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",data="Notify")
+                        wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",
+                                                        data="Notify")
                         LastUnreadCount = CurrentUnreadCount
             except:
                 pass

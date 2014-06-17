@@ -11,13 +11,14 @@ try:
     mixer.music.load('Yah.wav')
 except:
     mixer = None
-
+import os
 
 class Notify(Thread):
     def __init__(self, convos):
         Thread.__init__(self)
-        notificationconvo = convos[0]
-        print notificationconvo
+        self.msg = convos[0][-1]
+        if self.msg['from'][:-1] == "Me":
+            return
         self.start()
     
     def run(self):
@@ -28,10 +29,12 @@ class Notify(Thread):
             
     def runPynotifyVersion(self):
         if pynotify.init("GoogleVoice"):
-            n = pynotify.Notification("Google Voice Linux Client",
-                                        "New Messages.")
+            iconImage = "file://"+os.path.join(Globals.path, "resources",
+                                                "google-voice-icon.png")
+            n = pynotify.Notification("Google Voice Client: New Messages",
+                              "Most Recent: {0}\n{1}".format(
+                              self.msg['from'][:-1],self.msg['text']),iconImage)
             n.set_urgency(pynotify.URGENCY_NORMAL)
-            #n.add_action("default", "Default Action", self.RequestUser)
             
             if not n.show():
                 print "Failed to send notification"

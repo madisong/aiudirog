@@ -1,5 +1,6 @@
 import wx
 import sys
+import os
 from lib.UI.MsgsPanel import *
 from wx import GetClientDisplayRect as GCDR
 from lib.Tools.Globals import *
@@ -35,6 +36,13 @@ class MainFrame(wx.Frame):
         self.SetMenuBar(menuBar)
         
         Globals.Frame = self
+        
+        iconImage = os.path.join(Globals.path,
+                                 "resources","google-voice-icon.png")
+        image = wx.Image(iconImage, wx.BITMAP_TYPE_PNG).ConvertToBitmap() 
+        icon = wx.EmptyIcon() 
+        icon.CopyFromBitmap(image) 
+        self.SetIcon(icon)
         
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Show()

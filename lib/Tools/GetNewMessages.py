@@ -7,6 +7,7 @@ import BeautifulSoup
 from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
 import re
+from lib.Tools.Notify import *
 
 class GetNewMsgs(Thread):
     def __init__(self,runwhat,arg=None,notify=None):

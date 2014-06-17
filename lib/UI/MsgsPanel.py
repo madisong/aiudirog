@@ -92,11 +92,7 @@ class MsgsPanel(scrolled.ScrolledPanel,BaseColorChangeObj):
         wx.CallAfter(self.CheckNew)
     
     def ThreadForLoadFolder(self, event=None):
-        if event.data == "Notify":
-            notify = True
-        else:
-            notify = False
-        wx.CallAfter(GetNewMsgs,"LoadFolder", notify)
+        wx.CallAfter(GetNewMsgs,"LoadFolder")
     
     def ReLoadFolder(self, data=None):
         self.Convos = data.data
@@ -110,7 +106,11 @@ class MsgsPanel(scrolled.ScrolledPanel,BaseColorChangeObj):
         self.SetupScrolling()
     
     def ThreadForReLoadFolder(self, event=None):
-        wx.CallAfter(GetNewMsgs,"ReLoadFolder",self.Convos)
+        if event.data == "Notify":
+            notify = True
+        else:
+            notify = False
+        wx.CallAfter(GetNewMsgs,"ReLoadFolder",self.Convos, notify)
     
     def LoadMoreMessages(self, data=None):
         self.MSGBox.Clear(True)
