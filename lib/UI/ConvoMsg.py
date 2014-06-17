@@ -7,6 +7,9 @@ from lib.Tools.ExtraFunctions import *
 
 
 class ConvoMsg(wx.Panel,BaseColorChangeObj):
+    """
+    A single message in the conversation window.
+    """    
     def __init__(self, parent, msg, *args, **kws):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY,style=wx.BORDER_SUNKEN)
         hbox = wx.BoxSizer(wx.HORIZONTAL)

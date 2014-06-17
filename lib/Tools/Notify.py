@@ -14,6 +14,12 @@ except:
 import os
 
 class Notify(Thread):
+    """
+    This thread will notify the user of any new messages. On a system that has
+    pynotify, it will use that to notify the user via the the system 
+    notifications. Otherwise it will use toasaterbox, which is a notification
+    system built into wxpython.
+    """
     def __init__(self, convos):
         Thread.__init__(self)
         self.msg = convos[0][-1]

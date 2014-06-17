@@ -10,6 +10,9 @@ import re
 from lib.Tools.Notify import *
 
 class GetNewMsgs(Thread):
+    """
+    Run a thread to download the new messages from the server.
+    """
     def __init__(self,runwhat,arg=None,notify=None):
         Thread.__init__(self)
         self.runwhat = runwhat
@@ -21,9 +24,13 @@ class GetNewMsgs(Thread):
         if Globals.GetNew:
             return
         Globals.GetNew = True
+        #What to run:
         getattr(self, self.runwhat)()
         
     def LoadFolder(self):
+        """
+        Just load the folder fresh.
+        """
         getattr(Globals.Voice, self.arg)()
         
         tmpfolder = fetchfolderpage(Globals.Voice,self.arg,1)
@@ -33,6 +40,10 @@ class GetNewMsgs(Thread):
         Globals.GetNew = False
         
     def ReLoadFolder(self):
+        """
+        Reload the folder for updates. Uses the arg to find 
+        how many pages to download.
+        """
         size = len(self.arg)
         while size%10 != 0:
             size += 1
@@ -51,6 +62,9 @@ class GetNewMsgs(Thread):
         Globals.GetNew = False
         
     def LoadMoreMessages(self):
+        """
+        Load an extra page of messages.
+        """
         size = len(self.arg)
         page = size/10+1
         

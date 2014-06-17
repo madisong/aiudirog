@@ -7,16 +7,10 @@ This is a program I decided to write when I found that there was a serious lack 
 ####Dependencies-
 //I have included a python script that will install dependencies for Linux. It is untested, but worth a try.;)
 
--python 2.7
-
--wxPython (v2.8 is best)
-
--python-keyring
-
--BeautifulSoup
-
--pygooglevoice (custom package! In repository. I had to modify some scripts to make it work)
-
-
+- python 2.7
+- wxPython (v2.8 is best)
+- python-keyring
+- BeautifulSoup
+- pygooglevoice (custom package! In repository. I had to modify some scripts to make it work)
 
 All you have to do is run "python main.py" in the root directory of the repo to run the program once dependencies are installed.
