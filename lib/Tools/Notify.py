@@ -2,13 +2,14 @@ import wx
 from lib.Tools.Globals import *
 from threading import Thread
 from wx import GetClientDisplayRect as GCDR
+import os
 try: import pynotify
 except:
     import wx.lib.agw.toasterbox as TB
 try:
     import pygame.mixer as mixer
     mixer.init(44100)
-    mixer.music.load('Yah.wav')
+    mixer.music.load(os.path.join(Globals.path,'Yah.wav'))
 except:
     mixer = None
 import os
@@ -68,9 +69,9 @@ class Notify(Thread):
     def PlaySound(self):
         if mixer:
             try: mixer.music.play() 
-	    except:
+            except:
                mixer.init(44100)
-               mixer.music.load('Yah.wav')
+               mixer.music.load(os.path.join(Globals.path,'Yah.wav'))
                mixer.music.play() 
     
     def RequestUser(self, event=None):
