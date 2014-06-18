@@ -11,3 +11,6 @@ class Globals():
     DEAD = False
     GetNew = False
     path = None
+    Contacts = {}
+    ContactNames = []
+    

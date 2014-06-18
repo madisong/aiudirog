@@ -2,6 +2,7 @@ import wx
 from lib.Tools.Globals import *
 from wx.lib.pubsub import setupv1
 from wx.lib.pubsub import Publisher as pub
+from lib.Tools.TextCtrlAutoComplete import TextCtrlAutoComplete
 
 class ComposeWindow(wx.Dialog):
     """
@@ -15,7 +16,8 @@ class ComposeWindow(wx.Dialog):
         Panel = wx.Panel(self)
         
         TOtxt = wx.StaticText(Panel, -1, "To:")
-        self.TO = wx.TextCtrl(Panel)
+        #self.TO = wx.TextCtrl(Panel)
+        self.TO = TextCtrlAutoComplete(Panel, choices=Globals.ContactNames)
         MSGtxt = wx.StaticText(Panel, -1, "Message:")
         self.MSG = wx.TextCtrl(Panel,style=wx.TE_MULTILINE)
         send = wx.Button(Panel, -1, "Send")
@@ -41,6 +43,8 @@ class ComposeWindow(wx.Dialog):
         to = self.TO.GetValue()
         if text == "" or text.replace("\n","") == "":
             return
+        if to in Globals.ContactNames:
+            to = Globals.Contacts[to]
         Globals.Voice.send_sms(to, text)
         wx.CallAfter(pub.sendMessage,"ThreadForReLoadFolder",data=None)
         self.OnClose()

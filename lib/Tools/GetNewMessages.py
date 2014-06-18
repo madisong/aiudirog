@@ -103,8 +103,9 @@ class GetNewMsgs(Thread):
                 for span in spans :                         # for all spans in row
                     cl = span["class"].replace('gc-message-sms-', '')
                     msgitem[cl] = (" ".join(span.findAll(text=True))).strip()   # put text in dict
-                    if cl == "text":
-                        msgitem[cl] = msgitem[cl].replace("&lt;3", "<3")
+                    #Fix some broken characters
+                    msgitem[cl] = msgitem[cl].replace("&lt;3", "<3")
+                    msgitem[cl] = msgitem[cl].replace("#39;", "'")
                 msgitem["number"] = number
                 tmp.append(msgitem)                    # add msg dictionary to list
             Convos.append(tmp)

@@ -20,6 +20,17 @@ class CheckNewMsgs(Thread):
         self.start()
         
     def run(self):
+        #Download contacts:
+        try:
+            userinfo = loads(urlopen(Request("https://www.google.com/voice/request/user")).read())
+            Contacts = userinfo["contacts"]
+            for c, value in Contacts.iteritems():
+                name = value["name"].replace("#39;", "'").replace("&lt;3", "<3")
+                Globals.Contacts[name] = value["phoneNumber"]
+                Globals.ContactNames.append(name)
+        except:
+            pass
+            #Eventually a pop-up to say there was no internet connection.
         CurrentUnreadCount = 0
         LastUnreadCount = 0
         while True:
