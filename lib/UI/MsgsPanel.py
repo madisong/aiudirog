@@ -20,7 +20,7 @@ class MsgsPanel(scrolled.ScrolledPanel,BaseColorChangeObj):
         BaseColorChangeObj.__init__(self,"MainFrameBackgroundColor")
         MainSizer = wx.BoxSizer(wx.VERTICAL)
         self.MSGBox = wx.BoxSizer(wx.VERTICAL)
-        self.LoadMoreBox = wx.BoxSizer(wx.VERTICAL)
+        self.LoadMoreBox = wx.BoxSizer(wx.HORIZONTAL)
         
         MainSizer.Add(self.MSGBox,0,wx.EXPAND|wx.ALL,0)
         MainSizer.Add(self.LoadMoreBox,0,wx.EXPAND|wx.ALL,0)
@@ -70,6 +70,11 @@ class MsgsPanel(scrolled.ScrolledPanel,BaseColorChangeObj):
         LoadMore = wx.StaticText(self, -1, "Load More...")
         LoadMore.Bind(wx.EVT_LEFT_UP, self.ThreadForLoadMoreMessages)
         self.LoadMoreBox.Add(LoadMore,0,wx.EXPAND|wx.ALL,10)
+        
+        Refresh = wx.StaticText(self, -1, "Refresh")
+        Refresh.Bind(wx.EVT_LEFT_UP, self.ThreadForReLoadFolder)
+        self.LoadMoreBox.Add(Refresh,0,wx.EXPAND|wx.ALL,10)
+        
         self.Layout()
     
     def CheckNew(self, event=None):
